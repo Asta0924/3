@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>Untitled</title>
+  <link rel="stylesheet" href="./style.css">
+
+</head>
+<body>
+<!-- partial:index.partial.html -->
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>貨幣轉換器</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+        }
+        .converter {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        input, select {
+            margin: 10px;
+            padding: 5px;
+        }
+        button {
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="converter">
+        <h1>貨幣轉換器</h1>
+        <input type="number" id="amount" placeholder="輸入金額">
+        <select id="fromCurrency">
+            <option value="USD">美元 (USD)</option>
+            <option value="EUR">歐元 (EUR)</option>
+            <option value="JPY">日圓 (JPY)</option>
+            <option value="TWD">台幣 (TWD)</option>
+            <option value="KRW">韓元 (KRW)</option>
+            <!-- 你可以添加更多貨幣 -->
+        </select>
+        <select id="toCurrency">
+            <option value="USD">美元 (USD)</option>
+            <option value="EUR">歐元 (EUR)</option>
+            <option value="JPY">日圓 (JPY)</option>
+            <option value="TWD">台幣 (TWD)</option>
+            <option value="KRW">韓元 (KRW)</option>
+            <!-- 你可以添加更多貨幣 -->
+        </select>
+        <button onclick="convertCurrency()">轉換</button>
+        <h2 id="result"></h2>
+    </div>
+    <script>
+        async function convertCurrency() {
+            const amount = document.getElementById('amount').value;
+            const fromCurrency = document.getElementById('fromCurrency').value;
+            const toCurrency = document.getElementById('toCurrency').value;
+
+            if (!amount || amount <= 0) {
+                alert('請輸入有效的金額');
+                return;
+            }
+
+            try {
+                const response = await fetch(`https://api.exchangerate-api.com/v4/latest/${fromCurrency}`);
+                const data = await response.json();
+
+                const rate = data.rates[toCurrency];
+                const result = amount * rate;
+
+                document.getElementById('result').innerText = `結果: ${amount} ${fromCurrency} = ${result.toFixed(2)} ${toCurrency}`;
+            } catch (error) {
+                alert('獲取匯率時出錯');
+                console.error(error);
+            }
+        }
+    </script>
+</body>
+</html>
+<!-- partial -->
+  
+</body>
+</html>
